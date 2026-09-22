@@ -1,0 +1,25 @@
+# The Kaggle dataset — ~150 MB, and app.py expects it here at runtime.
+# Download it from:
+# https://www.kaggle.com/datasets/mlg-ulb/creditcardfraud
+creditcard.csv
+
+# Scored output from the app's download button, if it ever lands on disk
+fraud_detection_results.csv
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+
+# Notebooks
+.ipynb_checkpoints/
+
+# Secrets and local config
+.env
+.streamlit/secrets.toml
+
+# OS
+.DS_Store
+Thumbs.db
