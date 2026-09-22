@@ -38,26 +38,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# Best model first. The name shown in the UI comes from the object that actually
+# loaded, so the app can never again advertise a model it is not running.
+MODEL_FILES = (
+    'best_fraud_model.joblib',             # XGBoost, trained on the full data
+    'logistic_regression_baseline.joblib',  # fallback baseline
+)
+
+
 @st.cache_resource
 def load_model():
-    """Load the best fraud detection model"""
-    try:
-        # Try to load XGBoost model first (best performance)
-        model = joblib.load('best_fraud_model_with_xgboost.joblib')
-        model_name = "XGBoost"
-    except:
+    """Load the best available fraud detection model."""
+    for path in MODEL_FILES:
         try:
-            # Fallback to other models
-            model = joblib.load('best_fraud_model_no_svm.joblib')
-            model_name = "Best Model (KNN/Decision Tree/Logistic Regression)"
-        except:
-            try:
-                model = joblib.load('best_fraud_model.joblib')
-                model_name = "Best Model"
-            except:
-                st.error("❌ Error: Could not load any model file. Please ensure the model file exists in the Code directory.")
-                return None, None
-    return model, model_name
+            model = joblib.load(path)
+        except FileNotFoundError:
+            continue
+        except Exception as e:
+            st.warning(f"⚠️ Could not load {path}: {e}")
+            continue
+        return model, type(model).__name__
+
+    st.error(
+        "❌ No model file could be loaded. Expected one of "
+        f"{', '.join(MODEL_FILES)} next to app.py."
+    )
+    return None, None
 
 @st.cache_data
 def load_scaler_data():

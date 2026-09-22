@@ -86,9 +86,11 @@ Credit Card Fraud Detection - Support Vector Machines.ipynb  RBF SVM on undersam
 Credit Card Fraud Detection- XGBOOST.ipynb               final model + exported artefact
 app.py                                                   Streamlit scoring interface
 best_fraud_model.joblib                                  exported XGBoost classifier
-best_fraud_model_no_svm.joblib                           logistic-regression baseline
-best_fraud_model_with_xgboost.joblib                     logistic-regression baseline
+logistic_regression_baseline.joblib                      fallback baseline
 ```
+
+The app loads the XGBoost model first and labels the UI from the loaded object's own
+class name, so what it reports is always what it is running.
 
 ## Known limitations
 
